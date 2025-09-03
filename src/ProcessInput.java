@@ -62,13 +62,9 @@ public class ProcessInput {
                 throw new RuntimeException("Error opening file " + filepath + " [2]");
             }
 
-            mesgBroadcaster.addListener((FileIdMesgListener)listener);
-            mesgBroadcaster.addListener((UserProfileMesgListener)listener);
-            mesgBroadcaster.addListener((DeviceInfoMesgListener)listener);
-            mesgBroadcaster.addListener((MonitoringMesgListener)listener);
-            mesgBroadcaster.addListener((RecordMesgListener)listener);
 
-            decode.addListener((DeveloperFieldDescriptionListener)listener);
+            mesgBroadcaster.addListener(listener);
+
 
             try {
                 decode.read(in, mesgBroadcaster, mesgBroadcaster);
@@ -106,129 +102,8 @@ public class ProcessInput {
         }
     }
 
-    private static class Listener implements FileIdMesgListener, UserProfileMesgListener, DeviceInfoMesgListener, MonitoringMesgListener, RecordMesgListener, DeveloperFieldDescriptionListener {
+    private static class Listener implements RecordMesgListener {
 
-        @Override
-        public void onMesg(FileIdMesg mesg) {
-            System.out.println("File ID:");
-
-            if (mesg.getType() != null) {
-                System.out.print("   Type: ");
-                System.out.println(mesg.getType().getValue());
-            }
-
-            if (mesg.getManufacturer() != null ) {
-                System.out.print("   Manufacturer: ");
-                System.out.println(mesg.getManufacturer());
-            }
-
-            if (mesg.getProduct() != null) {
-                System.out.print("   Product: ");
-                System.out.println(mesg.getProduct());
-            }
-
-            if (mesg.getSerialNumber() != null) {
-                System.out.print("   Serial Number: ");
-                System.out.println(mesg.getSerialNumber());
-            }
-
-            if (mesg.getNumber() != null) {
-                System.out.print("   Number: ");
-                System.out.println(mesg.getNumber());
-            }
-        }
-
-        @Override
-        public void onMesg(UserProfileMesg mesg) {
-            System.out.println("User profile:");
-
-            if (mesg.getFriendlyName() != null) {
-                System.out.print("   Friendly Name: ");
-                System.out.println(mesg.getFriendlyName());
-            }
-
-            if (mesg.getGender() != null) {
-                if (mesg.getGender() == Gender.MALE) {
-                    System.out.println("   Gender: Male");
-                } else if (mesg.getGender() == Gender.FEMALE) {
-                    System.out.println("   Gender: Female");
-                }
-            }
-
-            if (mesg.getAge() != null) {
-                System.out.print("   Age [years]: ");
-                System.out.println(mesg.getAge());
-            }
-
-            if (mesg.getWeight() != null) {
-                System.out.print("   Weight [kg]: ");
-                System.out.println(mesg.getWeight());
-            }
-        }
-
-        @Override
-        public void onMesg(DeviceInfoMesg mesg) {
-            System.out.println("Device info:");
-
-            if (mesg.getTimestamp() != null) {
-                System.out.print("   Timestamp: ");
-                System.out.println(mesg.getTimestamp());
-            }
-
-            if (mesg.getBatteryStatus() != null) {
-                System.out.print("   Battery status: ");
-
-                switch (mesg.getBatteryStatus()) {
-                    case BatteryStatus.CRITICAL:
-                        System.out.println("Critical");
-                        break;
-                    case BatteryStatus.GOOD:
-                        System.out.println("Good");
-                        break;
-                    case BatteryStatus.LOW:
-                        System.out.println("Low");
-                        break;
-                    case BatteryStatus.NEW:
-                        System.out.println("New");
-                        break;
-                    case BatteryStatus.OK:
-                        System.out.println("OK");
-                        break;
-                    default:
-                        System.out.println("Invalid");
-                        break;
-                }
-            }
-        }
-
-        @Override
-        public void onMesg(MonitoringMesg mesg) {
-            System.out.println("Monitoring:");
-
-            if (mesg.getTimestamp() != null) {
-                System.out.print("   Timestamp: ");
-                System.out.println( mesg.getTimestamp());
-            }
-
-            if (mesg.getActivityType() != null) {
-                System.out.print("   Activity Type: ");
-                System.out.println(mesg.getActivityType());
-            }
-
-            // Depending on the ActivityType, there may be Steps, Strokes, or Cycles present in the file
-            if (mesg.getSteps() != null) {
-                System.out.print("   Steps: ");
-                System.out.println( mesg.getSteps());
-            } else if (mesg.getStrokes() != null) {
-                System.out.print("   Strokes: ");
-                System.out.println(mesg.getStrokes());
-            } else if (mesg.getCycles() != null) {
-                System.out.print("   Cycles: ");
-                System.out.println(mesg.getCycles());
-            }
-
-            printDeveloperData(mesg);
-        }
 
         @Override
         public void onMesg(RecordMesg mesg) {
@@ -269,22 +144,13 @@ public class ProcessInput {
             }
         }
 
-        @Override
-        public void onDescription(DeveloperFieldDescription desc) {
-            System.out.println("New Developer Field Description");
-            System.out.println("   App Id: " + desc.getApplicationId());
-            System.out.println("   App Version: " + desc.getApplicationVersion());
-            System.out.println("   Field Num: " + desc.getFieldDefinitionNumber());
-        }
+
 
         private void printValues(Mesg mesg, int fieldNum) {
             Iterable<FieldBase> fields = mesg.getOverrideField((short) fieldNum);
             Field profileField = Factory.createField(mesg.getNum(), fieldNum);
             boolean namePrinted = false;
 
-            if (profileField == null) {
-                return;
-            }
 
             for (FieldBase field : fields) {
                 if (!namePrinted) {
