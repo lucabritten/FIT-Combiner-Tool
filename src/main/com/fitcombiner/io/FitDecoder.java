@@ -1,6 +1,5 @@
-package com.fitcombiner.io;
+package main.com.fitcombiner.io;
 
-import com.fitcombiner.model.FitFile;
 import com.garmin.fit.*;
 
 import java.io.FileInputStream;
@@ -11,13 +10,11 @@ import java.io.InputStream;
 
 public class FitDecoder {
 
-    FitFile fitFile = new FitFile();
-
-    public void decode(String filepath){
+    public static void decode(String filepath){
         try {
             Decode decode = new Decode();
             MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(decode);
-            Listener listener = new Listener(null);
+            FitListener listener = new FitListener(null);
             FileInputStream in;
 
             if (filepath == null) {
