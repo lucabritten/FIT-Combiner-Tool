@@ -1,0 +1,94 @@
+package com.fitcombiner.io;
+
+import com.fitcombiner.model.FitFile;
+import com.garmin.fit.*;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+
+
+public class FitDecoder {
+
+    FitFile fitFile = new FitFile();
+
+    public void decode(String filepath){
+        try {
+            Decode decode = new Decode();
+            MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(decode);
+            Listener listener = new Listener(null);
+            FileInputStream in;
+
+            if (filepath == null) {
+                throw new IllegalArgumentException("Please enter a valid filepath");
+            }
+
+            try {
+                in = new FileInputStream(filepath);
+            } catch (IOException e) {
+                throw new RuntimeException("1Error opening file: " + filepath);
+            }
+
+            try {
+                if (!decode.checkFileIntegrity((InputStream) in))
+                    throw new RuntimeException("FIT file integrity failed");
+            } catch (RuntimeException e) {
+                System.err.print("Exception Checking File Integrity: ");
+                System.err.println(e.getMessage());
+                System.err.println("Trying to continue...");
+            } finally {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            try {
+                in = new FileInputStream(filepath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            mesgBroadcaster.addListener((FileIdMesgListener) listener);
+            mesgBroadcaster.addListener((DeviceInfoMesgListener) listener);
+            mesgBroadcaster.addListener((RecordMesgListener) listener);
+            mesgBroadcaster.addListener((SessionMesgListener) listener);
+
+
+            try {
+                decode.read(in, mesgBroadcaster, mesgBroadcaster);
+            } catch (FitRuntimeException e) {
+                if (decode.getInvalidFileDataSize()) {
+                    decode.nextFile();
+                    decode.read(in, mesgBroadcaster, mesgBroadcaster);
+                } else {
+                    System.err.print("Exception decoding file: ");
+                    System.err.println(e.getMessage());
+
+                    try {
+                        in.close();
+                    } catch (IOException f) {
+                        throw new RuntimeException(f);
+                    }
+
+                    return;
+                }
+            }
+
+            try {
+                in.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("Decoded FIT file " + filepath + ".");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+
+
+        }
+    }
+}
