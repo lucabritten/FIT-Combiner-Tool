@@ -2,6 +2,7 @@ package main.com.fitcombiner.io;
 
 import main.com.fitcombiner.model.FitFile;
 import com.garmin.fit.*;
+import main.com.fitcombiner.util.FitMathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,20 +75,13 @@ public class FitListener implements FileIdMesgListener,
             fitFile.setAvgSpeed(avgSpeed);
         }
         else{
-            double avgSpeed = fitFile.getSpeed().stream()
-                    .mapToDouble(Float::doubleValue)
-                    .average()
-                    .orElse(0.0);
-            fitFile.setAvgSpeed((float) avgSpeed);
+            double avgSpeed = FitMathUtils.calcAvgSpeed(fitFile);
         }
 
         if (msg.getAvgHeartRate() != null && msg.getAvgHeartRate() != 0)
             fitFile.setAvgHeartRate(msg.getAvgHeartRate());
         else{
-            double avgHeartRate = fitFile.getHeartRate().stream()
-                    .mapToInt(Short::intValue)
-                    .average()
-                    .orElse(0.0);
+            double avgHeartRate = FitMathUtils.calcAvgHeartRate(fitFile);
             fitFile.setAvgHeartRate((short) Math.round(avgHeartRate));
         }
         System.out.println(fitFile);
