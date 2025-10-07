@@ -2,16 +2,24 @@ package main.com.fitcombiner.model;
 
 import com.garmin.fit.DateTime;
 import com.garmin.fit.File;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@Data
+@AllArgsConstructor
 public class FitFile {
+
+    public FitFile(){
+        heartRate = new ArrayList<>();
+        cadence = new ArrayList<>();
+        distance = new ArrayList<>();
+        speed = new ArrayList<>();
+        latPosition = new ArrayList<>();
+        longPosition = new ArrayList<>();
+    }
 
     //get Data from FileIdMesgListener
     private File fileType;
@@ -30,9 +38,9 @@ public class FitFile {
     //get Data from SessionMesgListener
     private DateTime startTime;
     private Float duration;
-    private Float absDistance;//m/s
+    private Float absDistance;
     private Short avgHeartRate;
-    private Float avgSpeed;
+    private Float avgSpeed; // m/s
 
     public void addHeartRateValues(List<Short> list){
         heartRate.addAll(list);
@@ -53,5 +61,26 @@ public class FitFile {
 
     public void addLongPositionValues(List<Integer> list){
         longPosition.addAll(list);
+    }
+
+    @Override
+    public String toString() {
+        return "FitFile{" +
+                "fileType=" + fileType +
+                ", manufacturer=" + manufacturer +
+                ", product=" + product +
+                ", serialNumber=" + serialNumber +
+                ", heartRate=" + heartRate +
+                ", cadence=" + cadence +
+                ", distance=" + distance +
+                ", speed=" + speed +
+                ", latPosition=" + latPosition +
+                ", longPosition=" + longPosition +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                ", absDistance=" + absDistance +
+                ", avgHeartRate=" + avgHeartRate +
+                ", avgSpeed=" + avgSpeed +
+                '}';
     }
 }

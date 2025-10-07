@@ -1,6 +1,7 @@
 package main.com.fitcombiner.io;
 
 import com.garmin.fit.*;
+import main.com.fitcombiner.model.FitFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +15,8 @@ public class FitDecoder {
         try {
             Decode decode = new Decode();
             MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(decode);
-            FitListener listener = new FitListener(null);
+            FitFile fitFile = new FitFile();
+            FitListener listener = new FitListener(fitFile);
             FileInputStream in;
 
             if (filepath == null) {
@@ -49,7 +51,6 @@ public class FitDecoder {
             }
 
             mesgBroadcaster.addListener((FileIdMesgListener) listener);
-            mesgBroadcaster.addListener((DeviceInfoMesgListener) listener);
             mesgBroadcaster.addListener((RecordMesgListener) listener);
             mesgBroadcaster.addListener((SessionMesgListener) listener);
 
