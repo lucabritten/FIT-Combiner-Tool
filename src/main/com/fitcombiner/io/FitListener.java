@@ -39,6 +39,7 @@ public class FitListener implements FileIdMesgListener,
 
     @Override
     public void onMesg(RecordMesg msg) {
+        fitFile.addTimeStampValues(combineDateTimeField(msg, RecordMesg.TimestampFieldNum));
         fitFile.addHeartRateValues(combineDatafieldToList(msg, RecordMesg.HeartRateFieldNum, Short.class));
         fitFile.addCadenceValues(combineDatafieldToList(msg, RecordMesg.CadenceFieldNum, Short.class));
         fitFile.addDistanceValues(combineDatafieldToList(msg, RecordMesg.DistanceFieldNum, Float.class));
@@ -76,6 +77,7 @@ public class FitListener implements FileIdMesgListener,
         }
         else{
             double avgSpeed = FitMathUtils.calcAvgSpeed(fitFile);
+            fitFile.setAvgSpeed((float) avgSpeed);
         }
 
         if (msg.getAvgHeartRate() != null && msg.getAvgHeartRate() != 0)
@@ -87,6 +89,23 @@ public class FitListener implements FileIdMesgListener,
         System.out.println(fitFile);
     }
 
+    private List<DateTime> combineDateTimeField(Mesg mesg, int fieldNum) {
+        List<DateTime> values = new ArrayList<>();
+        FieldBase field = mesg.getField((short) fieldNum);
+
+        if (field == null)
+            return values;
+
+        for (int i = 0; i < field.getNumValues(); i++) {
+            Object value = field.getValue(i);
+            if (value instanceof DateTime dt)
+                values.add(dt);
+            else if (value instanceof Number num)
+                values.add(new DateTime(num.longValue()));
+        }
+
+        return values;
+    }
 
     @SuppressWarnings("unchecked")
     private <T extends Number> List<T> combineDatafieldToList(Mesg mesg, int fieldNum, Class<T> type) {

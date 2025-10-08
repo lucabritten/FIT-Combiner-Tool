@@ -13,6 +13,7 @@ import java.util.List;
 public class FitFile {
 
     public FitFile(){
+        timeStamps = new ArrayList<>();
         heartRate = new ArrayList<>();
         cadence = new ArrayList<>();
         distance = new ArrayList<>();
@@ -28,6 +29,7 @@ public class FitFile {
     private Long serialNumber;
 
     //get Data from RecordMesgListener
+    private List<DateTime> timeStamps;
     private List<Short> heartRate;
     private List<Short> cadence;
     private List<Float> distance;
@@ -41,6 +43,10 @@ public class FitFile {
     private Float absDistance;
     private Short avgHeartRate;
     private Float avgSpeed; // m/s
+
+    public void addTimeStampValues(List<DateTime> list){
+        timeStamps.addAll(list);
+    }
 
     public void addHeartRateValues(List<Short> list){
         heartRate.addAll(list);

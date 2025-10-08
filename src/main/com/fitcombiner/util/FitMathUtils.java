@@ -7,6 +7,8 @@ import java.util.List;
 
 public class FitMathUtils {
 
+
+
     public static Float calcDelta(FitFile firstFile, FitFile secondFile){
         Long start1 = firstFile.getStartTime().getTimestamp();
         Float duration1 = firstFile.getDuration();

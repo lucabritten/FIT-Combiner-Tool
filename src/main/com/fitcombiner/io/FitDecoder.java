@@ -11,11 +11,11 @@ import java.io.InputStream;
 
 public class FitDecoder {
 
-    public static void decode(String filepath){
+    public static FitFile decode(String filepath){
+        FitFile fitFile = new FitFile();
         try {
             Decode decode = new Decode();
             MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(decode);
-            FitFile fitFile = new FitFile();
             FitListener listener = new FitListener(fitFile);
             FileInputStream in;
 
@@ -70,8 +70,6 @@ public class FitDecoder {
                     } catch (IOException f) {
                         throw new RuntimeException(f);
                     }
-
-                    return;
                 }
             }
 
@@ -80,13 +78,11 @@ public class FitDecoder {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
             System.out.println("Decoded FIT file " + filepath + ".");
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-
-
         }
+        return fitFile;
     }
 }
