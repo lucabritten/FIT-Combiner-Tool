@@ -51,7 +51,6 @@ public class FitListener implements FileIdMesgListener,
 
     @Override
     public void onMesg(SessionMesg msg) {
-        System.out.println("Session:");
 
         if (msg.getStartTime() != null) {
             fitFile.setStartTime(msg.getStartTime());
@@ -86,7 +85,6 @@ public class FitListener implements FileIdMesgListener,
             double avgHeartRate = FitMathUtils.calcAvgHeartRate(fitFile);
             fitFile.setAvgHeartRate((short) Math.round(avgHeartRate));
         }
-        System.out.println(fitFile);
     }
 
     private List<DateTime> combineDateTimeField(Mesg mesg, int fieldNum) {

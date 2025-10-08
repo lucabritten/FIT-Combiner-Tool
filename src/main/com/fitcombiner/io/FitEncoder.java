@@ -11,7 +11,7 @@ public class FitEncoder {
         try {
             FileEncoder encoder = new FileEncoder(
                     new File(outputPath),
-                    Fit.ProtocolVersion.V2_0);
+                    Fit.ProtocolVersion.V1_0);
 
             //File-ID Message
             FileIdMesg fileIdMesg = new FileIdMesg();

@@ -5,7 +5,7 @@ import main.com.fitcombiner.util.FitMathUtils;
 
 public class FitCombinerService {
 
-    public FitFile merge(FitFile firstFile, FitFile secondFile){
+    public static FitFile merge(FitFile firstFile, FitFile secondFile){
         if(firstFile == null || secondFile == null)
             throw new RuntimeException("Cannot merge null FitFile.");
         if(FitMathUtils.calcDelta(firstFile, secondFile) < 0){
@@ -23,14 +23,17 @@ public class FitCombinerService {
         return combinedFitFile;
     }
 
-    private void mergeFileIdMesgData(FitFile combinedFitFile, FitFile firstFile){
+    private static void mergeFileIdMesgData(FitFile combinedFitFile, FitFile firstFile){
         combinedFitFile.setFileType(firstFile.getFileType());
         combinedFitFile.setManufacturer(firstFile.getManufacturer());
         combinedFitFile.setProduct(firstFile.getProduct());
         combinedFitFile.setSerialNumber(firstFile.getSerialNumber());
     }
 
-    private void mergeRecordMesgData(FitFile combinedFitFile, FitFile firstFile, FitFile secondFile){
+    private static void mergeRecordMesgData(FitFile combinedFitFile, FitFile firstFile, FitFile secondFile){
+        combinedFitFile.addTimeStampValues(firstFile.getTimeStamps());
+        combinedFitFile.addTimeStampValues(secondFile.getTimeStamps());
+
         combinedFitFile.addHeartRateValues(firstFile.getHeartRate());
         combinedFitFile.addHeartRateValues(secondFile.getHeartRate());
 
@@ -50,7 +53,7 @@ public class FitCombinerService {
         combinedFitFile.addLongPositionValues(secondFile.getLongPosition());
     }
 
-    private void mergeSessionMesgData(FitFile combinedFitFile, FitFile firstFile, FitFile secondFile){
+    private static void mergeSessionMesgData(FitFile combinedFitFile, FitFile firstFile, FitFile secondFile){
         combinedFitFile.setStartTime(firstFile.getStartTime());
 
         Float duration = firstFile.getDuration() + secondFile.getDuration();
