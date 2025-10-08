@@ -1,7 +1,7 @@
-package main.com.fitcombiner.io;
+package com.fitcombiner.io;
 
 import com.garmin.fit.*;
-import main.com.fitcombiner.model.FitFile;
+import com.fitcombiner.model.FitFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;

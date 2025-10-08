@@ -1,6 +1,6 @@
-package main.com.fitcombiner.util;
+package com.fitcombiner.util;
 
-import main.com.fitcombiner.model.FitFile;
+import com.fitcombiner.model.FitFile;
 
 import java.util.ArrayList;
 import java.util.List;

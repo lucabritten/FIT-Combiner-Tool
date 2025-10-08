@@ -1,7 +1,7 @@
-package main.com.fitcombiner.service;
+package com.fitcombiner.service;
 
-import main.com.fitcombiner.model.FitFile;
-import main.com.fitcombiner.util.FitMathUtils;
+import com.fitcombiner.model.FitFile;
+import com.fitcombiner.util.FitMathUtils;
 
 public class FitCombinerService {
 

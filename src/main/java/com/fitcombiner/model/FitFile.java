@@ -1,4 +1,4 @@
-package main.com.fitcombiner.model;
+package com.fitcombiner.model;
 
 import com.garmin.fit.DateTime;
 import com.garmin.fit.File;
@@ -47,7 +47,6 @@ public class FitFile {
     public void addTimeStampValues(List<DateTime> list){
         timeStamps.addAll(list);
     }
-
     public void addHeartRateValues(List<Short> list){
         heartRate.addAll(list);
     }

@@ -1,9 +1,9 @@
-package main.com.fitcombiner;
+package com.fitcombiner;
 
-import main.com.fitcombiner.io.FitDecoder;
-import main.com.fitcombiner.io.FitEncoder;
-import main.com.fitcombiner.model.FitFile;
-import main.com.fitcombiner.service.FitCombinerService;
+import com.fitcombiner.io.FitDecoder;
+import com.fitcombiner.io.FitEncoder;
+import com.fitcombiner.model.FitFile;
+import com.fitcombiner.service.FitCombinerService;
 
 import java.io.File;
 import java.util.Arrays;
