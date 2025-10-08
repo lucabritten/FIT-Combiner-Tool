@@ -1,10 +1,52 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-# Environment-dependent path to Maven home directory
-/mavenHomeManager.xml
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
+# ============================================
+# Java & Maven Project .gitignore
+# ============================================
+
+# --- Maven build output ---
+/target/
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iml
+out/
+*.iws
+
+# --- Eclipse / NetBeans (optional compatibility) ---
+.classpath
+.project
+.settings/
+nbproject/private/
+
+# --- OS-specific ---
+.DS_Store
+Thumbs.db
+
+# --- Logs & temp files ---
+*.log
+*.tmp
+*.swp
+
+# --- Compiled classes ---
+*.class
+
+# --- Package files ---
+*.jar
+*.war
+*.ear
+
+# --- Lombok generated files ---
+lombok.config
+
+# --- Test reports ---
+/surefire-reports/
+/failsafe-reports/
+
+# --- Backup files ---
+*~
+*.bak
+
+# --- MacOS metadata ---
+._*
+
+# --- Environment files ---
+.env
