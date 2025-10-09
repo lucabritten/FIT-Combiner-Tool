@@ -26,7 +26,7 @@ public class FitDecoder {
             try {
                 in = new FileInputStream(filepath);
             } catch (IOException e) {
-                throw new RuntimeException("1Error opening file: " + filepath);
+                throw new IOException("Error opening file: " + filepath);
             }
 
             try {
@@ -82,7 +82,7 @@ public class FitDecoder {
             System.out.println("Decoded FIT file " + filepath + ".");
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
         return fitFile;
     }

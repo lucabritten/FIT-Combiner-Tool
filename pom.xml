@@ -37,7 +37,7 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <!-- Erstes Plugin: sorgt für Manifest-Eintrag (Main-Class) -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -52,7 +52,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Zweites Plugin: erzeugt die lauffähige Fat JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -90,6 +89,18 @@
             <groupId>com.garmin</groupId>
             <artifactId>fit</artifactId>
             <version>[21.120.0,)</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.11.0-M2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.26.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
