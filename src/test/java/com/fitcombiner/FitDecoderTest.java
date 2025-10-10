@@ -67,8 +67,4 @@ public class FitDecoderTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Error opening file: src/test/resources/missing.fit");
     }
-
-
-
-
 }

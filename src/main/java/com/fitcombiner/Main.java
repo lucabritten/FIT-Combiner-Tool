@@ -20,9 +20,36 @@ public class Main {
         if(args.length == 2){
             firstFile = new File(args[0]);
             secondFile = new File(args[1]);
-            System.out.println("Gefundene Dateien:");
+            System.out.println("Attached files:");
             System.out.println(" - " + firstFile);
             System.out.println(" - " + secondFile);
+        }
+        else if (args.length > 2) {
+            System.out.println("Attached files:");
+            List<File> files = Arrays.stream(args)
+                    .map(File::new)
+                    .toList();
+
+            files.forEach(file -> System.out.println(" - " + file));
+
+            try {
+                FitFile mergedActivity = FitDecoder.decode(files.get(0).getAbsolutePath());
+
+                for (int i = 1; i < files.size(); i++) {
+                    FitFile nextFile = FitDecoder.decode(files.get(i).getAbsolutePath());
+                    mergedActivity = FitCombinerService.merge(mergedActivity, nextFile);
+                }
+
+                String outputPath = new File(files.get(0).getParent(), "mergedActivity.fit").getAbsolutePath();
+                FitEncoder.encode(mergedActivity, outputPath);
+
+                System.out.println("Merged " + files.size() + " activities successfully!");
+                System.out.println("Output path: " + outputPath);
+
+            } catch (Exception e) {
+                System.err.println("Error while merging multiple files: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
         else {
             File currentDir = new File(System.getProperty("user.dir"));
@@ -43,9 +70,9 @@ public class Main {
             System.out.println(" - " + secondFile);
         }
 
-        String outputPath = new File(firstFile.getParent(), "mergedActivity.fit").getAbsolutePath();
-
         try{
+            String outputPath = new File(firstFile.getParent(), "mergedActivity.fit").getAbsolutePath();
+
             FitFile decodedFile1 = FitDecoder.decode(firstFile.getAbsolutePath());
             FitFile decodedFile2 = FitDecoder.decode(secondFile.getAbsolutePath());
             FitFile mergedActivity = FitCombinerService.merge(decodedFile1, decodedFile2);
