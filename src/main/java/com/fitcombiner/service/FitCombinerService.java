@@ -1,11 +1,41 @@
 package com.fitcombiner.service;
 
+import com.fitcombiner.io.FitDecoder;
+import com.fitcombiner.io.FitEncoder;
 import com.fitcombiner.model.FitFile;
 import com.fitcombiner.util.FitMathUtils;
 
+import java.io.File;
+import java.util.Comparator;
+import java.util.List;
+
 public class FitCombinerService {
 
-    public static FitFile merge(FitFile firstFile, FitFile secondFile){
+    public static void mergeAll(List<File> files){
+
+        try {
+            String outputPath = new File(files.get(0).getParent(), "mergedActivity.fit").getAbsolutePath();
+
+            List<FitFile> decodedFitFiles = files.stream()
+                    .map(file -> FitDecoder.decode(file.getAbsolutePath()))
+                    .sorted(Comparator.comparing(FitFile::getStartTime))
+                    .toList();
+
+            FitFile mergedActivity = decodedFitFiles.stream()
+                    .reduce(FitCombinerService::merge)
+                    .orElseThrow(() -> new RuntimeException("No files to merge"));
+
+            FitEncoder.encode(mergedActivity, outputPath);
+
+            System.out.println("Merged activities successfully!");
+            System.out.println("Output path: " + outputPath);
+        } catch (Exception e) {
+            System.err.println("Error while merging: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static FitFile merge(FitFile firstFile, FitFile secondFile){
         if(firstFile == null || secondFile == null)
             throw new RuntimeException("Cannot merge null FitFile.");
         if(FitMathUtils.calcDelta(firstFile, secondFile) < 0){
