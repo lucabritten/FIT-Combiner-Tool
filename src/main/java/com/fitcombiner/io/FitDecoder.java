@@ -78,8 +78,8 @@ public class FitDecoder {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println(fitFile.getTimeStamps().size());
             System.out.println("Decoded FIT file " + filepath + ".");
+            System.out.println(fitFile.getDuration());
         }
         catch (Exception e){
             throw new RuntimeException(e);

@@ -11,15 +11,14 @@ import java.util.List;
 
 public class FitCombinerService {
 
-    public static void mergeAll(List<File> files){
+    public static FitFile mergeAll(List<File> files){
+        if(files == null || files.size() < 2 || files.get(0) == null)
+            throw new IllegalArgumentException("At least two valid files are required!");
+
+        String outputPath = new File(files.get(0).getParent(), "mergedActivity.fit").getAbsolutePath();
 
         try {
-            String outputPath = new File(files.get(0).getParent(), "mergedActivity.fit").getAbsolutePath();
-
-            List<FitFile> decodedFitFiles = files.stream()
-                    .map(file -> FitDecoder.decode(file.getAbsolutePath()))
-                    .sorted(Comparator.comparing(FitFile::getStartTime))
-                    .toList();
+            List<FitFile> decodedFitFiles = decodeAndSort(files);
 
             FitFile mergedActivity = decodedFitFiles.stream()
                     .reduce(FitCombinerService::merge)
@@ -29,18 +28,28 @@ public class FitCombinerService {
 
             System.out.println("Merged activities successfully!");
             System.out.println("Output path: " + outputPath);
-        } catch (Exception e) {
-            System.err.println("Error while merging: " + e.getMessage());
-            e.printStackTrace();
+
+            return mergedActivity;
         }
+        catch (Exception e) {
+            System.err.println("Error while merging: " + e.getMessage());
+            throw new RuntimeException("Error while merging FIT files: " + e.getMessage());
+        }
+    }
+
+    private static List<FitFile> decodeAndSort(List<File> files){
+        return files.stream()
+                .map(file -> FitDecoder.decode(file.getAbsolutePath()))
+                .sorted(Comparator.comparing(FitFile::getStartTime))
+                .toList();
     }
 
     private static FitFile merge(FitFile firstFile, FitFile secondFile){
         if(firstFile == null || secondFile == null)
-            throw new RuntimeException("Cannot merge null FitFile.");
-        if(FitMathUtils.calcDelta(firstFile, secondFile) < 0){
+            throw new IllegalArgumentException("Cannot merge null FitFile.");
+        if(FitMathUtils.calcDelta(firstFile, secondFile) < 0)
             throw new IllegalArgumentException("Both files are overlapping.");
-        }
+
 
         FitFile combinedFitFile = new FitFile();
 

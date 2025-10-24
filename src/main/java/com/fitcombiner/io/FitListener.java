@@ -55,8 +55,8 @@ public class FitListener implements FileIdMesgListener,
         if (msg.getStartTime() != null) {
             fitFile.setStartTime(msg.getStartTime());
         }
-        if (msg.getTotalElapsedTime() != null) {
-            fitFile.setDuration(msg.getTotalElapsedTime());
+        if (msg.getTotalTimerTime() != null) {
+            fitFile.setDuration(msg.getTotalTimerTime());
         }
 
         if (msg.getTotalDistance() != null && msg.getTotalDistance() != 0)

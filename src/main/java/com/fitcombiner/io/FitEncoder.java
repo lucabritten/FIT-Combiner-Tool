@@ -59,6 +59,8 @@ public class FitEncoder {
             session.setAvgSpeed(fitFile.getAvgSpeed());
             encoder.write(session);
 
+            System.out.println("TTT:" + session.getTotalTimerTime());
+
             //Activity Message
             ActivityMesg activity = new ActivityMesg();
             activity.setNumSessions(1);
