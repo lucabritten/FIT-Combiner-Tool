@@ -39,6 +39,7 @@ public class FileCollector {
 
     private static List<File> collectFilesFromParamList(String[] args){
         return Arrays.stream(args)
+                .filter(f -> f.endsWith(".fit"))
                 .map(File::new)
                 .toList();
     }
