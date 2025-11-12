@@ -1,6 +1,7 @@
 package com.britten.fittools.controller;
 
 import com.britten.fittools.integration.strava.TokenResponse;
+import com.britten.fittools.integration.strava.UploadResponse;
 import com.britten.fittools.service.StravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +40,14 @@ public class StravaController {
         catch (Exception e){
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @GetMapping("/status/{activityId}")
+    public ResponseEntity<String> getCurrentUploadStatus(@PathVariable String activityId, @RequestHeader("Authorization") String bearerToken) throws Exception{
+        System.out.println(activityId);
+        System.out.println(bearerToken);
+
+        UploadResponse uploadResponse = stravaService.getCurrentUploadStatus(activityId, bearerToken);
+        return ResponseEntity.ok(uploadResponse.getStatus());
     }
 }

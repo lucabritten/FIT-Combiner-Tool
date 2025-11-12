@@ -3,9 +3,12 @@ package com.britten.fittools.service;
 
 import com.britten.fittools.integration.strava.StravaConfig;
 import com.britten.fittools.integration.strava.TokenResponse;
+import com.britten.fittools.integration.strava.UploadResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.classic.BasicHttpClientResponseHandler;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +30,10 @@ public class StravaService {
     private final StravaConfig stravaConfig;
     private final ObjectMapper objectMapper;
 
+    private static final String BASE_URL = "https://www.strava.com/";
+
     public String getAuthUrl(){
-        return "https://www.strava.com/oauth/authorize"
+        return BASE_URL + "oauth/authorize"
                 + "?client_id=" + stravaConfig.getClientId()
                 + "&response_type=code"
                 + "&redirect_uri=" + stravaConfig.getRedirectUri()
@@ -36,7 +42,7 @@ public class StravaService {
     }
 
     public TokenResponse exchangeToken(String code){
-        String url = "https://www.strava.com/oauth/token";
+        String url = BASE_URL + "oauth/token";
 
         String jsonBody = String.format(
         "{\"client_id\": \"%s\", \"client_secret\": \"%s\", \"code\": \"%s\", \"grant_type\": \"authorization_code\"}",
@@ -65,7 +71,8 @@ public class StravaService {
         multipartFile.transferTo(tempFile);
 
         try(CloseableHttpClient client = HttpClients.createDefault()){
-            HttpPost post = new HttpPost("https://www.strava.com/api/v3/uploads");
+            String url = BASE_URL + "api/v3/uploads";
+            HttpPost post = new HttpPost(url);
             post.setHeader("Authorization", bearerToken);
 
             post.setEntity(MultipartEntityBuilder.create()
@@ -79,7 +86,9 @@ public class StravaService {
             var response = client.execute(post);
 //            String response = client.execute(post, new BasicHttpClientResponseHandler()); -> returns String
 
-            System.out.println(response);
+//            System.out.println(response);
+            UploadResponse uploadResponse = objectMapper.readValue(response.getEntity().getContent(), UploadResponse.class);
+            System.out.println(uploadResponse);
             var status = response.getCode();
 
             if(status >= 200 && status < 300)
@@ -93,7 +102,7 @@ public class StravaService {
     }
 
     public TokenResponse refreshAccessToken(String refreshToken) throws IOException {
-        String url = "https://www.strava.com/oath/token";
+        String url =  BASE_URL + "oath/token";
 
         String body = String.format("""
                 {
@@ -118,6 +127,20 @@ public class StravaService {
                 return objectMapper.readValue(response.getEntity().getContent(), TokenResponse.class);
             }
             throw new IOException("Failed to refresh token: " + response.getCode());
+        }
+    }
+
+    public UploadResponse getCurrentUploadStatus(String activityId, String bearerToken) throws Exception{
+        String url = BASE_URL + "api/v3/uploads/" + activityId;
+
+        try(CloseableHttpClient client = HttpClients.createDefault()){
+            HttpGet get = new HttpGet(url);
+            get.setHeader("Content-Type", "application/json");
+            get.setHeader("Authorization", bearerToken);
+
+            var response = client.execute(get);
+            UploadResponse uploadResponse = objectMapper.readValue(response.getEntity().getContent(), UploadResponse.class);
+            return uploadResponse;
         }
     }
 
