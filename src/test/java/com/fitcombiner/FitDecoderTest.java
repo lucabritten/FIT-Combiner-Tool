@@ -1,8 +1,8 @@
 package com.fitcombiner;
 
 
-import com.fitcombiner.io.FitDecoder;
-import com.fitcombiner.model.FitFile;
+import com.britten.fittools.tools.fitcombiner.io.FitDecoder;
+import com.britten.fittools.tools.fitcombiner.model.FitFile;
 import com.garmin.fit.File;
 import org.junit.jupiter.api.Test;
 

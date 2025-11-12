@@ -1,4 +1,4 @@
-package com.fitcombiner.model;
+package com.britten.fittools.tools.fitcombiner.model;
 
 import com.garmin.fit.DateTime;
 import com.garmin.fit.File;

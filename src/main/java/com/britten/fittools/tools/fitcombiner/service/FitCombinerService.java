@@ -1,9 +1,9 @@
-package com.fitcombiner.service;
+package com.britten.fittools.tools.fitcombiner.service;
 
-import com.fitcombiner.io.FitDecoder;
-import com.fitcombiner.io.FitEncoder;
-import com.fitcombiner.model.FitFile;
-import com.fitcombiner.util.FitMathUtils;
+import com.britten.fittools.tools.fitcombiner.io.FitDecoder;
+import com.britten.fittools.tools.fitcombiner.io.FitEncoder;
+import com.britten.fittools.tools.fitcombiner.model.FitFile;
+import com.britten.fittools.tools.fitcombiner.util.FitMathUtils;
 
 import java.io.File;
 import java.util.Comparator;

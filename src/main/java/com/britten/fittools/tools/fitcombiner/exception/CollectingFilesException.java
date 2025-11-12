@@ -1,4 +1,4 @@
-package com.fitcombiner.exception;
+package com.britten.fittools.tools.fitcombiner.exception;
 
 public class CollectingFilesException extends RuntimeException {
 

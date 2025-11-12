@@ -1,7 +1,7 @@
-package com.fitcombiner;
+package com.britten.fittools.tools.fitcombiner;
 
-import com.fitcombiner.util.FileCollector;
-import com.fitcombiner.service.FitCombinerService;
+import com.britten.fittools.tools.fitcombiner.util.FileCollector;
+import com.britten.fittools.tools.fitcombiner.service.FitCombinerService;
 
 import java.io.File;
 import java.util.*;

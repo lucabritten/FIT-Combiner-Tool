@@ -1,7 +1,7 @@
 package com.fitcombiner;
 
-import com.fitcombiner.model.FitFile;
-import com.fitcombiner.service.FitCombinerService;
+import com.britten.fittools.tools.fitcombiner.model.FitFile;
+import com.britten.fittools.tools.fitcombiner.service.FitCombinerService;
 import org.junit.jupiter.api.*;
 
 import java.io.File;

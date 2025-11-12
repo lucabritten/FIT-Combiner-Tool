@@ -1,6 +1,7 @@
 package com.britten.fittools.controller;
 
-import com.britten.fittools.service.FitCombinerService;
+import com.britten.fittools.service.FitCombService;
+import com.britten.fittools.tools.fitcombiner.model.FitFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class FitCombinerController {
 
     @Autowired
-    private FitCombinerService fitCombinerService;
+    private FitCombService fitCombinerService;
 
     @PostMapping("/upload")
     public void uploadFile(@RequestParam("file") MultipartFile multipartFile){
         fitCombinerService.handleFileUpload(multipartFile);
+    }
+
+    @PostMapping("/combine")
+    public ResponseEntity<FitFile> combineFiles(){
+        FitFile combined = fitCombinerService.combineFiles();
+        return ResponseEntity.ok(combined);
     }
 }

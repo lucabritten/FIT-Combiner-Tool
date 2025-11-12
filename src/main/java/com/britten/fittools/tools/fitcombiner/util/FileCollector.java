@@ -1,6 +1,6 @@
-package com.fitcombiner.util;
+package com.britten.fittools.tools.fitcombiner.util;
 
-import com.fitcombiner.exception.CollectingFilesException;
+import com.britten.fittools.tools.fitcombiner.exception.CollectingFilesException;
 
 import java.io.File;
 import java.util.Arrays;

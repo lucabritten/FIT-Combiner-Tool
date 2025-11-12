@@ -1,6 +1,6 @@
-package com.fitcombiner.util;
+package com.britten.fittools.tools.fitcombiner.util;
 
-import com.fitcombiner.model.FitFile;
+import com.britten.fittools.tools.fitcombiner.model.FitFile;
 
 import java.util.ArrayList;
 import java.util.List;

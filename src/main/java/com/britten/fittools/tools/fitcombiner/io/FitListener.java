@@ -1,8 +1,8 @@
-package com.fitcombiner.io;
+package com.britten.fittools.tools.fitcombiner.io;
 
-import com.fitcombiner.model.FitFile;
+import com.britten.fittools.tools.fitcombiner.model.FitFile;
 import com.garmin.fit.*;
-import com.fitcombiner.util.FitMathUtils;
+import com.britten.fittools.tools.fitcombiner.util.FitMathUtils;
 
 import java.util.ArrayList;
 import java.util.List;

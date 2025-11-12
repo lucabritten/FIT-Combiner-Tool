@@ -1,7 +1,7 @@
 package com.fitcombiner;
 
-import com.fitcombiner.exception.CollectingFilesException;
-import com.fitcombiner.util.FileCollector;
+import com.britten.fittools.tools.fitcombiner.exception.CollectingFilesException;
+import com.britten.fittools.tools.fitcombiner.util.FileCollector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
