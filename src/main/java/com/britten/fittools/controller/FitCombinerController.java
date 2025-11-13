@@ -1,14 +1,13 @@
 package com.britten.fittools.controller;
 
 import com.britten.fittools.service.FitCombService;
-import com.britten.fittools.tools.fitcombiner.model.FitFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tools/fit-combiner")
@@ -23,8 +22,18 @@ public class FitCombinerController {
     }
 
     @PostMapping("/combine")
-    public ResponseEntity<FitFile> combineFiles(){
-        FitFile combined = fitCombinerService.combineFiles();
+    public ResponseEntity<File> combineFiles(){
+        File combined = fitCombinerService.combineFiles();
         return ResponseEntity.ok(combined);
+    }
+
+    @GetMapping("/combined/download")
+    public ResponseEntity<File> downloadFile(){
+        return null;
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<String>> getStatus(){
+        return ResponseEntity.ok(fitCombinerService.getStatus());
     }
 }

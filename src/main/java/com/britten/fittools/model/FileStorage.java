@@ -33,4 +33,11 @@ public class FileStorage {
         uploadedFiles.forEach(File::delete);
         uploadedFiles.clear();
     }
+
+    public List<String> getUploadedFileNames(){
+        return uploadedFiles.stream()
+                .map(File::getName)
+                .toList();
+    }
+
 }

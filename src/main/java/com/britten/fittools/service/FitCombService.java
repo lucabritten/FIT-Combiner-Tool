@@ -1,7 +1,6 @@
 package com.britten.fittools.service;
 
 import com.britten.fittools.model.FileStorage;
-import com.britten.fittools.tools.fitcombiner.model.FitFile;
 import com.britten.fittools.tools.fitcombiner.service.FitCombinerService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Getter
@@ -39,8 +40,21 @@ public class FitCombService {
         }
     }
 
-    public FitFile combineFiles(){
-        return FitCombinerService.mergeAll(fileData.getUploadedFiles());
+    public File combineFiles(){
+        fileData.setLastCombinedFile(FitCombinerService.mergeAll(fileData.getUploadedFiles()));
+        fileData.clearUploads();
+        return null;
+    }
+
+    public File getCombinedFile(){
+        if(fileData.getLastCombinedFile() != null)
+            return fileData.getLastCombinedFile();
+
+        throw new NoSuchElementException("No combined file exists.");
+    }
+
+    public List<String> getStatus(){
+        return fileData.getUploadedFileNames();
     }
 
 }

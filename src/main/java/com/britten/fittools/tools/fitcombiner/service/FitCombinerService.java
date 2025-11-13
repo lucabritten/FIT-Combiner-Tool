@@ -3,6 +3,7 @@ package com.britten.fittools.tools.fitcombiner.service;
 import com.britten.fittools.tools.fitcombiner.io.FitDecoder;
 import com.britten.fittools.tools.fitcombiner.io.FitEncoder;
 import com.britten.fittools.tools.fitcombiner.model.FitFile;
+import com.britten.fittools.tools.fitcombiner.util.FitFileWriter;
 import com.britten.fittools.tools.fitcombiner.util.FitMathUtils;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class FitCombinerService {
 
-    public static FitFile mergeAll(List<File> files){
+    public static File mergeAll(List<File> files){
         if(files == null || files.size() < 2 || files.get(0) == null)
             throw new IllegalArgumentException("At least two valid files are required!");
 
@@ -29,7 +30,7 @@ public class FitCombinerService {
             System.out.println("Merged activities successfully!");
             System.out.println("Output path: " + outputPath);
 
-            return mergedActivity;
+            return FitFileWriter.writeFitFile(mergedActivity,"combined.fit");
         }
         catch (Exception e) {
             System.err.println("Error while merging: " + e.getMessage());
