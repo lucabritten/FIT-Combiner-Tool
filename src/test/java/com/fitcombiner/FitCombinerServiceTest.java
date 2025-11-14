@@ -1,7 +1,7 @@
 package com.fitcombiner;
 
-import com.britten.fittools.tools.fitcombiner.model.FitFile;
-import com.britten.fittools.tools.fitcombiner.service.FitCombinerService;
+import com.britten.fittools.modules.fitcombiner.domain.FitFile;
+import com.britten.fittools.modules.fitcombiner.core.FitCombinerService;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
@@ -37,7 +37,7 @@ public class FitCombinerServiceTest {
     @Test
     @Tag("FileList")
     void mergeAll_withValidFiles_mergesSuccessfully(){
-        FitFile mergedFile = FitCombinerService.mergeAll(files);
+        File mergedFile = FitCombinerService.mergeAll(files);
         assertThat(mergedFile).isNotNull();
     }
 
